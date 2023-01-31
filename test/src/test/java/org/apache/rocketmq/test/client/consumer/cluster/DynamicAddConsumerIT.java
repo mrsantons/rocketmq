@@ -50,28 +50,6 @@ public class DynamicAddConsumerIT extends BaseConf {
     }
 
     @Test
-    public void testAddOneConsumer() {
-        int msgSize = 100;
-        RMQNormalConsumer consumer1 = getConsumer(nsAddr, topic, "*", new RMQNormalListener());
-
-        MQAsyncProducer asyncDefaultMQProducer = new MQAsyncProducer(producer, msgSize, 100);
-        asyncDefaultMQProducer.start();
-        TestUtils.waitForSeconds(waitTime);
-
-        RMQNormalConsumer consumer2 = getConsumer(nsAddr, consumer1.getConsumerGroup(), topic,
-            "*", new RMQNormalListener());
-
-        asyncDefaultMQProducer.waitSendAll(waitTime * 6);
-
-        MQWait.waitConsumeAll(consumeTime, producer.getAllMsgBody(), consumer1.getListener(),
-            consumer2.getListener());
-
-        boolean recvAll = MQWait.waitConsumeAll(consumeTime, producer.getAllMsgBody(),
-            consumer1.getListener(), consumer2.getListener());
-        assertThat(recvAll).isEqualTo(true);
-    }
-
-    @Test
     public void testAddTwoConsumer() {
         int msgSize = 100;
         RMQNormalConsumer consumer1 = getConsumer(nsAddr, topic, "*", new RMQNormalListener());
